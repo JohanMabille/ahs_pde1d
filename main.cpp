@@ -3,6 +3,7 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Habib" << std::endll;
+    std::cout << "Habib" << std::endl;
+    std::cout<<"simon"<<std::endl;
     return 0;
 }
