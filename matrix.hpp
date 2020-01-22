@@ -8,7 +8,7 @@ class mat_Tridiagonal
 
 public:
     
-    mat_Tridiagonal(size_t N);
+    mat_Tridiagonal(size_t M);
     mat_Tridiagonal(mat_Tridiagonal const& temp); 
     ~mat_Tridiagonal(); 
     std::size_t dim() const;
@@ -17,7 +17,7 @@ public:
 
 private:
     
-    const size_t N; // dimension
+    const size_t M; // dimension
     double **mat; // data matrix
     
     
