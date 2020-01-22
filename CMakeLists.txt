@@ -20,11 +20,13 @@ if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS /MANIFEST:NO)
 endif()
 
-set(PDE_SOLVER_SRCS
+set(ahs_pde1d_SRCS
     closed_form.hpp
     closed_form.cpp
-    main.cpp)
+    main.cpp
+    matrix.cpp
+    matrix.hpp)
 
-set(PDE_SOLVER_TARGET pde_solver)
-add_executable(${PDE_SOLVER_TARGET} ${PDE_SOLVER_SRCS})
+set(ahs_pde1d_TARGET ahs_pde1d_solver)
+add_executable(${ahs_pde1d_TARGET} ${ahs_pde1d_SRCS})
 
