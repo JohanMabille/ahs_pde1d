@@ -12,6 +12,7 @@ public:
     mat_Tridiagonal(mat_Tridiagonal const& temp); 
     ~mat_Tridiagonal(); 
     std::size_t dim() const;
+    void fill_matrix(std::vector <std::vector <double>> boundary, std::vector<double> interior);
     const double& operator()(std::size_t i, std::size_t j) const; // A(i,j)
     std::vector<double> col(std::size_t i) const; 
 
