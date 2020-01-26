@@ -3,7 +3,53 @@
 #include <vector>
 #include <numeric>
 #include <string>
- 
+
+
+std::ostream& operator<<(std::ostream& res, const mat_Tridiagonal &X)
+{
+    size_t N = X.dim();
+
+    for(std::size_t i=0; i<N; i++)
+    {
+        for(std::size_t j=0; j<N; j++)
+        {
+            res << X(i, j) << ", ";
+        }
+        res << std::endl;
+    }
+    return res;
+}
+
+//mat_Tridiagonal& mat_Tridiagonal::operator+=(const mat_Tridiagonal& rhs)
+    //{
+        //for(std::size_t i = 0; i < rhs.dim(); ++i)
+        //{
+            //for(std::size_t j = 0; j < rhs.dim(); ++j)
+            //{
+                //mat[i * rhs.dim()+j] = mat[i * rhs.dim() + j] + rhs.mat[i * rhs.dim() + j];
+            //}
+        //}        
+
+    //}
+
+const std::vector<double> operator* (const mat_Tridiagonal &X, const std::vector<double> &y)
+{
+    std::vector<double> mult(X.dim(), 0);
+    
+    for (std::size_t i=0; i<X.dim(); i++)
+    {
+        for (std::size_t j=0; j<X.dim(); j++)
+        {
+            std::vector<double> store(X.dim());
+            std::transform(X.mat[i], X.mat[i]+X.dim(), y.begin(), store.begin(), [](double val1, double val2) { return val1 * val2; });
+            mult[i] = std::accumulate(store.begin(), store.end(), 0., std::plus<double>());
+        }
+    }
+    return mult;
+}
+
+
+
  mat_Tridiagonal::mat_Tridiagonal(size_t N): M(N)
 {
     mat = new double *[M]; 
@@ -16,7 +62,7 @@
 
 
 
-mat_Tridiagonal::mat_Tridiagonal(mat_Tridiagonal const&  temp): M(temp.M)
+mat_Tridiagonal::mat_Tridiagonal(mat_Tridiagonal const &temp): M(temp.M)
 {
         {
             mat = new double *[M];
@@ -94,12 +140,12 @@ std::size_t mat_Tridiagonal::dim() const
 
 std::vector<double> mat_Tridiagonal::col(std::size_t j) const
 {
-    std::vector<double> res(M);
+    std::vector<double> col(M);
     for(std::size_t i=0; i<M; i++)
     {
-        res[i] = this->operator()(i,j);
+        col[i] = this->operator()(i,j);
     }
-    return res;
+    return col;
 }
     
     
