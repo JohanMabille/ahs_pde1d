@@ -1,16 +1,16 @@
 #include "volatility.hpp"
 
-Volatility::Volatility(): vol(0.3)
+Volatility::Volatility(): v(0.3)
 {
     
 }
 
-Volatility::Volatility(double vol): vol(vol)
+Volatility::Volatility(double vol): v(vol)
 {
     
 }
 
 double Volatility::vol() const
 {
-    return vol;
+    return v;
 }
