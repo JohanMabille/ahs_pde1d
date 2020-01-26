@@ -25,7 +25,13 @@ set(ahs_pde1d_SRCS
     closed_form.cpp
     main.cpp
     matrix.cpp
-    matrix.hpp)
+    matrix.hpp
+    rate.hpp
+    rate.cpp
+    volatility.cpp
+    volatility.hpp
+    solver.hpp
+    solver.cpp)
 
 set(ahs_pde1d_TARGET ahs_pde1d_solver)
 add_executable(${ahs_pde1d_TARGET} ${ahs_pde1d_SRCS})
