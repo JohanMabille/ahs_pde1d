@@ -6,7 +6,9 @@
 
 void Solver::matrixes()
 {
-    
+    // Implementation: second operands of x1 and x3 should have opposite signs
+    // Design: what if we want to pass non constant volatility or rate?
+    // Implementation: x * x is faster than std::pow(x, 2) and easier to read
     auto x1 = [&](double theta) { return -dt*theta*(pow(sigma.vol(),2)/(2*pow(dx,2)) + (pow(sigma.vol(),2))/(4*dx) - (r.rf())/(2*dx)); };
     auto x2 = [&](double theta) { return 1 + (pow(sigma.vol(),2)*theta*dt/pow(dx,2)) + r.rf()*theta*dt; };
     auto x3 = [&](double theta) { return -dt*theta*(pow(sigma.vol(),2)/(2*pow(dx,2)) + (pow(sigma.vol(),2))/(4*dx) - (r.rf())/(2*dx)); };
@@ -28,6 +30,7 @@ void Solver::matrixes()
 
 Solver::Solver(double Spot, double T, double vol, double r, double theta, size_t M, size_t N, double (*payoff)(double), std::vector<double> boundaries): Spot(Spot), T(T), sigma(vol), r(r), theta(theta), price(0), _greeks(4, 0.), M(M), N(N), dx(10*sigma.vol()*sqrt(T)/M), dt(T/N), space(M+1, 10*sigma.vol()*sqrt(T)/M), time(N+1, dt), payoff(payoff), boundaries(boundaries), X(M-1), Xprime(M-1), u(M-1, 0)
 {
+
     matrixes();
     
     space[0] = 0;
@@ -71,10 +74,18 @@ std::vector<double> Solver::right_side(const std::vector<double> &f) const
 void Solver::pricing()
 {
 
-    
     std::vector<double> f(M-1, 0);
+    std::cout << "space size = " << space.size() << std::endl;
+    std::cout << "f size = " << f.size() << std::endl;
     std::transform(space.begin(), space.end(), f.begin(), [&](double arg1) { return (*payoff)(exp(arg1)); });
     
+    // Implementation: you can handle boundary conditions more easily: given the system A X  = B,
+    // fill A and B for i in (1, S-2). Then directly fill A(0, 0), A(0, 1), B(0), A(S-1, S-2), A(S-1, S-1) and
+    // B(S-1) depending on the boundary conditions. For instance, for Dirichlet condition, you have:
+    // A(0, 0) = A(S-1, S-1) = 1;
+    // A(0, 1) = A(S-1, s-2) = 0;
+    // B[0] = previous_sol[0] and B[S-1] = previous_sol[S -1]
+    std::cout << "Segfault in the previous line becausespace and f have different sizes" << std::endl;
     for(std::size_t i=0; i<N-1; i++)
     {
         f = thomas_algo(X, right_side(f)); // compute f(n) knowing f(n+1)
@@ -136,6 +147,7 @@ std::vector<double> thomas_algo(const mat_Tridiagonal &M, const std::vector<doub
     return x;
 }
 
+// Design: should accept strike as parameter
 double payoff(double S)
 {
     return std::max(S-100, 0.);

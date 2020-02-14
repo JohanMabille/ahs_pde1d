@@ -3,6 +3,7 @@
 #include <vector>
 #include <numeric>
 #include <string>
+#include <algorithm>
 
 
 std::ostream& operator<<(std::ostream& res, const mat_Tridiagonal &X)
@@ -32,6 +33,8 @@ std::ostream& operator<<(std::ostream& res, const mat_Tridiagonal &X)
 
     //}
 
+// Implementation: no need to return a const vector, since you return by value,
+// let th user do what he wants with it
 const std::vector<double> operator* (const mat_Tridiagonal &X, const std::vector<double> &y)
 {
     std::vector<double> mult(X.dim(), 0);
