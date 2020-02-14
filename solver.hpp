@@ -32,8 +32,11 @@ private:
     const double theta;
     double price;
     std::vector <double> _greeks;
+    // Design: why pointer of functins instead of classes that could accept additional parameters?
+    // That would improve flexibility
     double (*payoff)(double); // pointer to function (need to define it outside the class)
     
+    // Design:  you're not on twitter, you can choose longer and more meaningful names
     const size_t M; // size of space set
     const size_t N; // size of time set
     const double dx; // space step
